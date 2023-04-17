@@ -12,8 +12,12 @@
                 </div>
                 <div class="sellection">
                     <h1 class="sellection_title">Currently playing song</h1>
-
-                    <p class="selected_songs">song title:{{selectedSong}}</p>
+                    <div class="now_playing" v-for="(selectedSong, i) in  selectedSongs" :key="i">
+                        <h2 selected_song="song" @click="select_song">{{song[`title`]}}</h2>
+                        <p> Artist Name:{{selectedSong[`artist`]}}</p>
+                        <p>song ID:{{selectedSong[`song_id`]}}</p>
+                        <img :src="selectedSong[`image_url`]" alt="song album image">         
+                        </div>
                 </div>
             </div>
     </section>
@@ -22,7 +26,8 @@
     export default {
         data() {
             return {
-                selectedSong: '',
+                isEmpity:'',
+                selectedSongs: [],
                 songs:[
                         {
                             title: "Billie Jean",
@@ -65,12 +70,11 @@
             let get_title = details[`target`].innerText
             for ( let i = 0; i<this.songs.length; i++){
                 if ( get_title === this.songs[i][`title`] ){
-                    this.selectedSong = get_title
-                    get_title[`style`][`color`]=`red`
+                    this.selectedSongs.push(this.songs[i])
                     return
                 }
             }
-            this.selectedSong = 'Please select a song !'
+            this.isEmpity = 'Please select a song !'
         },
     }
          }
