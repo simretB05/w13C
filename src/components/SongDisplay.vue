@@ -3,8 +3,8 @@
         <h1>Best of 80's Hits Collections by Various Artists ...</h1>
             <div class="container">
                 <div class="main_card">
-                    <article  v-for="(song, i) in songs" :key="i" >
-                        <h2 selected_song="song" @click="select_song">{{song[`title`]}}</h2>
+                    <article    v-for="(song, i) in songs" :key="i" >
+                        <h2 @click="select_song">{{song[`title`]}}</h2>
                         <p> Artist Name:{{song[`artist`]}}</p>
                         <p>song ID:{{song[`song_id`]}}</p>
                         <img :src="song[`image_url`]" alt="song album image">
@@ -12,21 +12,25 @@
                 </div>
                 <div class="sellection">
                     <h1 class="sellection_title">Currently playing song</h1>
+                    <p v-if="noSelectedSongs">{{noSelectedSongs}}</p>
                     <div class="now_playing" v-for="(selectedSong, i) in  selectedSongs" :key="i">
-                        <h2 selected_song="song" @click="select_song">{{song[`title`]}}</h2>
+                        <h2 @click="select_song">{{selectedSong[`title`]}}</h2>
                         <p> Artist Name:{{selectedSong[`artist`]}}</p>
                         <p>song ID:{{selectedSong[`song_id`]}}</p>
                         <img :src="selectedSong[`image_url`]" alt="song album image">         
-                        </div>
+                    </div>
+                  
+
                 </div>
             </div>
+        
     </section>
 </template>
 <script>
     export default {
         data() {
             return {
-                isEmpity:'',
+                noSelectedSongs:' Please select a song!',
                 selectedSongs: [],
                 songs:[
                         {
@@ -65,19 +69,23 @@
                 }
         },
     methods: {
-            select_song: function ( details ){
-          
-            let get_title = details[`target`].innerText
-            for ( let i = 0; i<this.songs.length; i++){
-                if ( get_title === this.songs[i][`title`] ){
-                    this.selectedSongs.push(this.songs[i])
-                    return
+            select_song: function ( event ){
+            let get_title = event[`target`].innerText;
+            for ( let i = 0; i < this.songs.length; i++ ){
+                if ( get_title===this.songs[i][`title`]){
+                    this.selectedSongs.unshift( this.songs[i] )
+                    console.log( this.selectedSongs )
+                    this.noSelectedSongs =''
+                    break
                 }
+                }
+                    
             }
-            this.isEmpity = 'Please select a song !'
+          
         },
+       
     }
-         }
+         
 </script>
 
 <style scoped>
@@ -98,6 +106,7 @@ section{
 h1{
     color:red;
     justify-self: start;
+    font-size: 2rem;
 }
 
 
@@ -133,8 +142,12 @@ p{
 
 }
 .sellection_title{
-
+font-size: 3rem;
     width: 100%;
+}
+.sellection_title ~p{
+    font-size: 2rem;
+
 }
 .selected_songs{
      font-size: 1.3rem;
