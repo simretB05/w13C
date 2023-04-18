@@ -13,11 +13,12 @@
                 <div class="sellection">
                     <h1 class="sellection_title">Currently playing song</h1>
                     <p v-if="noSelectedSongs">{{noSelectedSongs}}</p>
-                    <div class="now_playing" v-for="(selectedSong, i) in  selectedSongs" :key="i">
-                        <h2 @click="select_song">{{selectedSong[`title`]}}</h2>
-                        <p> Artist Name:{{selectedSong[`artist`]}}</p>
-                        <p>song ID:{{selectedSong[`song_id`]}}</p>
-                        <img :src="selectedSong[`image_url`]" alt="song album image">         
+                    <div class="now_playing">
+                        <h2 @click="select_song">{{displaySongTitle}}</h2>
+                        <p> Artist Name:{{ displaySongTitle}}</p>
+                        <p> song ID:{{ displaySongId}}</p>
+                        <img :src="displayimage_url" alt="song album image">
+
                     </div>
                   
 
@@ -30,7 +31,11 @@
     export default {
         data() {
             return {
-                noSelectedSongs:' Please select a song!',
+                noSelectedSongs: ' Please select a song!',
+                displaySongTitle: '',
+                displaySongArtist: '',
+                displaySongId: '',
+                displayimage_url:'No Image',
                 selectedSongs: [],
                 songs:[
                         {
@@ -71,12 +76,17 @@
     methods: {
             select_song: function ( event ){
             let get_title = event[`target`].innerText;
+            let getNow_playing =document.querySelector(`.now_playing`)
             for ( let i = 0; i < this.songs.length; i++ ){
                 if ( get_title===this.songs[i][`title`]){
-                    this.selectedSongs.unshift( this.songs[i] )
-                    console.log( this.selectedSongs )
-                    this.noSelectedSongs =''
+                    this.displaySongTitle=this.songs[i][`title`]
+                    this.displaySongArtist = this.songs[i][`artist`]
+                    this.displaySongId = this.songs[i][`song_id`]
+                    this.displayimage_url = this.songs[i][`image_url`]
+                    this.noSelectedSongs = ''
+                    getNow_playing[`style`][`display`]= `grid`
                     break
+                    
                 }
                 }
                     
@@ -153,4 +163,11 @@ font-size: 3rem;
      font-size: 1.3rem;
      color: green;
 }
+.now_playing{
+display: none;
+place-items: center;
+background-color: papayawhip;
+grid-template-columns: 1fr 1fr 1fr;
+}
+
 </style>
