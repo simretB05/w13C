@@ -3,7 +3,7 @@
         <h1>Best of 80's Hits Collections by Various Artists ...</h1>
             <div class="container">
                 <div class="main_card">
-                    <article    v-for="(song, i) in songs" :key="i" >
+                    <article v-for="(song, i) in songs" :key="i" >
                         <h2 @click="select_song">{{song[`title`]}}</h2>
                         <p> Artist Name:{{song[`artist`]}}</p>
                         <p>song ID:{{song[`song_id`]}}</p>
@@ -13,7 +13,7 @@
                 <div class="sellection">
                     <h1 class="sellection_title">Currently playing song</h1>
                     <p v-if="noSelectedSongs">{{noSelectedSongs}}</p>
-                    <div class="now_playing">
+                    <div v-else class="now_playing">
                         <h2 @click="select_song">{{displaySongTitle}}</h2>
                         <p> Artist Name:{{ displaySongTitle}}</p>
                         <p> song ID:{{ displaySongId}}</p>
@@ -74,9 +74,8 @@
                 }
         },
     methods: {
-            select_song: function ( event ){
-            let get_title = event[`target`].innerText;
-            let getNow_playing =document.querySelector(`.now_playing`)
+            select_song: function ( details ){
+            let get_title = details[`target`].innerText;
             for ( let i = 0; i < this.songs.length; i++ ){
                 if ( get_title===this.songs[i][`title`]){
                     this.displaySongTitle=this.songs[i][`title`]
@@ -84,7 +83,7 @@
                     this.displaySongId = this.songs[i][`song_id`]
                     this.displayimage_url = this.songs[i][`image_url`]
                     this.noSelectedSongs = ''
-                    getNow_playing[`style`][`display`]= `grid`
+                   
                     break
                     
                 }
@@ -114,7 +113,7 @@ section{
     grid-template-columns:  1fr 1fr;
 }
 h1{
-    color:red;
+    color:rgb(29, 132, 234);
     justify-self: start;
     font-size: 2rem;
 }
@@ -164,7 +163,6 @@ font-size: 3rem;
      color: green;
 }
 .now_playing{
-display: none;
 place-items: center;
 background-color: papayawhip;
 grid-template-columns: 1fr 1fr 1fr;
